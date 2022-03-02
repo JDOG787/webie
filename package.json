@@ -1,13 +1,21 @@
 {
   "name": "webie",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "",
   "main": "lib/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
-  "author": "",
+  "author": "JDOG787",
+  "homepage": "https://github.com/JDOG787/webie/readme.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/JDOG787/webie.git"
+  },
+  "bugs": {
+    "url": "https://github.com/JDOG787/webie/issues"
+  },
   "license": "ISC",
   "devDependencies": {
     "nodemon": "^2.0.15"
