@@ -3,7 +3,7 @@ const web = server(8080, { log: true });
 
 
 web.get('/', (req, res) => {
-    res.send("<h1>root!</h1>");
+    res.send(`<h1>root! ${req.query.test}</h1>`);
     res.end();
 });
 
