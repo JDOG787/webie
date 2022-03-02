@@ -1,4 +1,4 @@
-const server = require('./lib/index.js');
+const server = require('../lib/index.js');
 const web = server(8080);
 
 
