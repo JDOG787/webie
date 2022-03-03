@@ -1,10 +1,12 @@
 const server = require('../lib/index.js');
 const web = server(8080, { log: true });
 
+function test(req, res) {
+    res.send('test');
+}
 
-web.get('/', (req, res) => {
+web.get('/', test, (req, res) => {
     res.send(`<h1>root! ${req.query.test}</h1>`);
-    res.end();
 });
 
 web.get('/hello', (req, res) => {
