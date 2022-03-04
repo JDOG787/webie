@@ -1,24 +1,27 @@
-const http = require("http");
+import http from "http";
+import { Options, Route, Middleware } from "./utils/types";
+import { IncomingMessage, ServerResponse } from "http";
 
-module.exports = (port, options) => {
-    let routes = [];
-    let middlewares = [];
+
+export default (port: number, options: Options) => {
+    let routes: Route[] = [];
+    let middlewares: ((req: IncomingMessage, res: ServerResponse) => void)[] = [];
 
     const server = http.createServer((req, res) => {
-        res.send = (data) => { res.write(data); res.end(); };
+        // res.send = (data: string) => { res.write(data); res.end(); };
 
 
-        const query = req.url.split("?")[1];
-        const queryObj = {};
+        const query = req.url?.split("?")[1];
+        const queryObj: Record<string, string> = {};
         if (query) {
             query.split("&").forEach(pair => {
                 const [key, value] = pair.split("=");
                 queryObj[key] = value;
             });
         }
-        req.query = queryObj;
+        // req.query = queryObj;
 
-        req.url = req.url.split("?")[0];
+        req.url = req.url?.split("?")[0];
 
 
         // middlewares
@@ -29,7 +32,7 @@ module.exports = (port, options) => {
 
         const route = routes.find((route) => route.path === req.url);
         if (route) {
-            if (options && options.log === true) { console.log(`${req.method} ${req.url}`); }  
+            if (options && options.showLogs === true) { console.log(`${req.method} ${req.url}`); }  
             if (route.middlewares) {
                 route.middlewares.forEach(middleware => {
                     middleware(req, res);
@@ -37,7 +40,7 @@ module.exports = (port, options) => {
             }
             route.handler(req, res);
         } else {
-            if (options && options.log === true) { console.log(`404 ${req.url}`); };
+            if (options && options.showLogs === true) { console.log(`404 ${req.url}`); };
 
             res.writeHead(404, { "Content-Type": "text/html" });
             res.write("<h1>404 This Page Doesn't Exist</h1>");
@@ -47,7 +50,7 @@ module.exports = (port, options) => {
 
     server.listen(port);
 
-    function get(path, ...handlers) {
+    function get(path: string, ...handlers: ((req: IncomingMessage, res: ServerResponse) => void)[]): void {
         routes.push({
             path, 
             handler: handlers[handlers.length - 1], 
@@ -55,7 +58,7 @@ module.exports = (port, options) => {
         });
     }
 
-    function middleware(handler) {
+    function middleware(handler: (req: IncomingMessage, res: ServerResponse) => void): void {
         middlewares.push(handler);
     }
 
