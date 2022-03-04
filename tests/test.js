@@ -1,10 +1,13 @@
-const server = require('../lib/index.js');
-const web = server(8080, { log: true });
+import server from '../dist/index.js';
+const web = server(8080, { showLogs: true });
 
-
-web.get('/', (req, res) => {
-    res.send(`<h1>root! ${req.query.test}</h1>`);
+function test(req, res) {
+    res.write('Hello World');
     res.end();
+}
+
+web.get('/', test, (req, res) => {
+    res.send(`<h1>root! ${req.query.test}</h1>`);
 });
 
 web.get('/hello', (req, res) => {
