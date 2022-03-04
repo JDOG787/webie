@@ -4,6 +4,7 @@
     "module": "esnext",
     "target": "ES5",
     "noImplicitAny": true,
+    "declaration": true,
     "moduleResolution": "node",
     "strict": true,
     "allowSyntheticDefaultImports": true,
