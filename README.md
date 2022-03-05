@@ -7,9 +7,10 @@ A lightweight http framework focused on simplicity.
 import webie from "webie";
 const web = webie(8080);
 
-// Not Complete(WIP) 
-web.middleware((req, res) => {
-    console.log(req)
+// WIP 
+web.middleware((req, res, next) => {
+    console.log(req);
+    next();
 });
 
 web.get("/", (req, res) => {
