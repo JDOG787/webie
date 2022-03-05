@@ -4,8 +4,13 @@ A lightweight http framework focused on simplicity.
 ## Usage 
 
 ```js
-const webie = reuqire("webie");
+import webie from "webie";
 const web = webie(8080);
+
+// Not Complete(WIP) 
+web.middleware((req, res) => {
+    console.log(req)
+});
 
 web.get("/", (req, res) => {
     res.send("hello world");

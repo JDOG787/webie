@@ -6,7 +6,7 @@
     "noImplicitAny": true,
     "declaration": true,
     "moduleResolution": "node",
-    "strict": true,
+    // "strict": true,
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "lib": [

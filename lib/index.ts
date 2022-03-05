@@ -1,11 +1,11 @@
 import http from "http";
-import { Options, Route, Middleware } from "./utils/types";
+import { Options, Route } from "./utils/types";
 import { IncomingMessage, ServerResponse } from "http";
 
 
 export default (port: number, options: Options) => {
     let routes: Route[] = [];
-    let middlewares: ((req: IncomingMessage, res: ServerResponse) => void)[] = [];
+    let middlewares: ((req: IncomingMessage, res: ServerResponse, next: Function) => void)[] = [];
 
     const server = http.createServer((req, res) => {
         // res.send = (data: string) => { res.write(data); res.end(); };
@@ -25,9 +25,20 @@ export default (port: number, options: Options) => {
 
 
         // middlewares
-        middlewares.forEach(middleware => {
-            middleware(req, res);
-        });
+        // middlewares.forEach(middleware => {
+        //     middleware(req, res);
+        // });\
+        let goNext = false;
+        function next() {
+            goNext = true;
+        }
+        for (const middleware of middlewares) {
+            goNext = false;
+            middleware(req, res, next);
+            if (!goNext) {
+                break;
+            }
+        }
 
 
         const route = routes.find((route) => route.path === req.url);
@@ -38,7 +49,10 @@ export default (port: number, options: Options) => {
                     middleware(req, res);
                 });
             }
-            route.handler(req, res);
+            console.log(goNext);
+            if (goNext) {
+                route.handler(req, res);
+            }
         } else {
             if (options && options.showLogs === true) { console.log(`404 ${req.url}`); };
 
