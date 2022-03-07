@@ -1,7 +1,7 @@
 import { IncomingMessage, ServerResponse } from "http";
 
 export interface Request extends IncomingMessage {
-    query: { [key: string]: string };
+    query: { [key: string]: string } | {};
 }
 
 export interface Response extends ServerResponse {
