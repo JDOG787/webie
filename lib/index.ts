@@ -1,14 +1,44 @@
 import http from "http";
-import { Options, Route } from "./utils/types";
+import { Options, Route, Request, Response } from "./utils/types";
 import { IncomingMessage, ServerResponse } from "http";
 
+
+declare module "http" { 
+  export interface ServerResponse {
+    send: (data: string) => void;
+  }
+}
+
+declare module "http" { 
+    export interface IncomingMessage {
+        query: { [key: string]: string };
+    }
+  }
 
 export default (port: number, options: Options) => {
     let routes: Route[] = [];
     let middlewares: ((req: IncomingMessage, res: ServerResponse, next: Function) => void)[] = [];
 
-    const server = http.createServer((req, res) => {
-        // res.send = (data: string) => { res.write(data); res.end(); };
+    const server = http.createServer((req: IncomingMessage, res: ServerResponse) => {
+        // response.write("Hello World!");
+        // function send(data: any): void {
+        //     response.write(data);
+        //     response.end();
+        // }
+        // const res = {
+        //     ...response,
+        //     send
+        // }
+        // console.log(res);
+        // res.write("Hello World!");
+
+
+
+    //     // const req = {
+    //     //     ...request,
+    //     //     query: {},
+    //     // }
+        res.send = (data: string) => { res.write(data); res.end(); };
 
 
         const query = req.url?.split("?")[1];
@@ -19,7 +49,7 @@ export default (port: number, options: Options) => {
                 queryObj[key] = value;
             });
         }
-        // req.query = queryObj;
+        req.query = queryObj;
 
         req.url = req.url?.split("?")[0];
 
@@ -28,7 +58,7 @@ export default (port: number, options: Options) => {
         // middlewares.forEach(middleware => {
         //     middleware(req, res);
         // });\
-        let goNext = false;
+        let goNext = true;
         function next() {
             goNext = true;
         }
@@ -49,7 +79,6 @@ export default (port: number, options: Options) => {
                     middleware(req, res);
                 });
             }
-            console.log(goNext);
             if (goNext) {
                 route.handler(req, res);
             }
