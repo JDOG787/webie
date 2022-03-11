@@ -6,6 +6,7 @@ import { IncomingMessage, ServerResponse } from "http";
 declare module "http" { 
   export interface ServerResponse {
     send: (data: string) => void;
+    json: (data: any) => void;
   }
 }
 
@@ -15,7 +16,7 @@ declare module "http" {
     }
   }
 
-export default (port: number, options: Options) => {
+export default (port: number, options?: Options) => {
     let routes: Route[] = [];
     let middlewares: ((req: IncomingMessage, res: ServerResponse, next: Function) => void)[] = [];
 
@@ -39,6 +40,7 @@ export default (port: number, options: Options) => {
     //     //     query: {},
     //     // }
         res.send = (data: string) => { res.write(data); res.end(); };
+        res.json = (data: any) => { res.write(JSON.stringify(data)); res.end(); };
 
 
         const query = req.url?.split("?")[1];
