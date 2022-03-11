@@ -14,3 +14,7 @@ web.get('/', (req, res) => {
 web.get('/hello', (req, res) => {
     res.send("Hello Again World!");
 });
+
+web.get('/json', (req, res) => {
+    res.json({lol: true, test: { yes: "ok" }})
+});

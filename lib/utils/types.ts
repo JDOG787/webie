@@ -6,6 +6,7 @@ export interface Request extends IncomingMessage {
 
 export interface Response extends ServerResponse {
     send: (data: any) => void;
+    json: (data: any) => void;
 }
 
 export interface Options {
