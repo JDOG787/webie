@@ -17,6 +17,10 @@ web.get("/", (req, res) => {
     res.send("hello world");
 });
 
+web.get("/json", (req, res) => {
+    res.json({ msg: "hello world" });
+});
+
 web.get("/queries", (req, res) => {
     const query = req.query.test;
     res.send(query ? query : "Send a query");
